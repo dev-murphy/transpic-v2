@@ -1,8 +1,13 @@
 <script lang="ts" setup>
-import type { Image } from "../../types";
 import { useFileDialog } from "@vueuse/core";
+import type { Image } from "../../types";
 
-const images = ref<Image[]>([]);
+const props = defineProps<{ modelValue: Image[] }>();
+const emit = defineEmits<{
+  (e: "update:modelValue", value: Image[]): void;
+}>();
+
+const images = toRef(props.modelValue);
 const dropzoneRef = useTemplateRef("dropzoneRef");
 const { open, onChange } = useFileDialog({
   accept: "image/*",
@@ -12,7 +17,7 @@ onChange((files) => {
   if (!files) return;
 
   images.value = [];
-  let currentFile;
+  let currentFile: File | null;
   for (let i = 0; i < files?.length; i++) {
     currentFile = files.item(i);
 
@@ -23,6 +28,8 @@ onChange((files) => {
       });
     }
   }
+
+  emit("update:modelValue", images.value);
 });
 
 const onDrop = (files: File[] | null) => {
@@ -34,6 +41,8 @@ const onDrop = (files: File[] | null) => {
       size: file.size,
     });
   });
+
+  emit("update:modelValue", images.value);
 };
 
 const { isOverDropZone } = useDropZone(dropzoneRef, {
@@ -46,14 +55,7 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
 
 <template>
   <div class="w-screen flex flex-col items-center px-3">
-    <h1 class="text-4xl text-white font-bold">
-      Transpic - Image Converter & Compresser
-    </h1>
-
-    <p class="max-w-[600px] mt-2 text-xl text-neutral-500">
-      A convenient way of converting and compressing all of your images. This
-      app is 🚧<span class="font-bold">UNDER CONSTRUCTION</span>🚧.
-    </p>
+  
 
     <div
       ref="dropzoneRef"
