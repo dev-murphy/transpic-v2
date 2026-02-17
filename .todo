@@ -1,0 +1,13 @@
+# Project Outline
+
+## Semantic Release
+☐ Install semantic release dependencies
+☐ Add `release.config.cjs` file
+
+## High Priority
+☐ Fix minor UI issues
+☐ Detect the image type for all uploaded images
+☐ Add the image conversion function for browser version
+    ☐ Install magick-wasm
+    ☐ Create generic class to handle image conversion
+
