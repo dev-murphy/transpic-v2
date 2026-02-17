@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Image } from "../../types";
+import { detechImageType } from "../utils";
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
@@ -36,18 +37,21 @@ const { open, onChange } = useFileDialog({
   accept: "image/*",
 });
 
-onChange((files) => {
+onChange(async (files) => {
   if (!files) return;
 
   let images = props.modelValue;
   let currentFile: File | null;
+
   for (let i = 0; i < files?.length; i++) {
     currentFile = files.item(i);
 
     if (currentFile) {
+      const type = await detechImageType(currentFile);
       images.push({
         name: currentFile.name,
         size: currentFile.size,
+        type,
       });
     }
   }
@@ -91,12 +95,14 @@ onChange((files) => {
         <div
           class="flex items-center gap-x-0.5 ml-auto mr-3 text-sm font-bold text-neutral-900"
         >
-          <span class="px-1 py-0.5 bg-neutral-500 rounded-lg">PNG</span>
+          <span class="px-1 py-0.5 bg-neutral-500 uppercase rounded-lg">{{
+            image.type
+          }}</span>
           <ArrowRight class="w-5 h-5 text-neutral-50" />
           <button
             class="px-1 py-0.5 bg-emerald-400 hover:brightness-120 hover:scale-105 transition-all rounded-lg cursor-pointer"
           >
-            SVG
+            {{ image.type === "webp" ? "PNG" : "WEBP" }}
           </button>
         </div>
 

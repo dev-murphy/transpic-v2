@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useFileDialog } from "@vueuse/core";
 import type { Image } from "../../types";
+import { detechImageType } from "../utils";
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
@@ -13,18 +13,19 @@ const { open, onChange } = useFileDialog({
   accept: "image/*",
 });
 
-onChange((files) => {
+onChange(async (files) => {
   if (!files) return;
 
   images.value = [];
   let currentFile: File | null;
   for (let i = 0; i < files?.length; i++) {
     currentFile = files.item(i);
-
     if (currentFile) {
+      const type = await detechImageType(currentFile);
       images.value.push({
         name: currentFile.name,
         size: currentFile.size,
+        type,
       });
     }
   }
@@ -35,10 +36,12 @@ onChange((files) => {
 const onDrop = (files: File[] | null) => {
   if (!files) return;
 
-  files.forEach((file) => {
+  files.forEach(async (file) => {
+    const type = await detechImageType(file);
     images.value?.push({
       name: file.name,
       size: file.size,
+      type,
     });
   });
 
