@@ -55,8 +55,6 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
 
 <template>
   <div class="w-screen flex flex-col items-center px-3">
-  
-
     <div
       ref="dropzoneRef"
       class="w-full max-w-[700px] h-[500px] flex flex-col items-center justify-center border-4 border-dashed mt-10 select-none rounded-2xl"
@@ -74,7 +72,9 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
           <AddImage class="w-5 h-5 text-emerald-500" />
           Choose Image(s)
         </button>
-        <p class="pt-1 text-neutral-500 text-lg leading-6 font-bold">
+        <p
+          class="pt-1 text-neutral-500 text-lg text-center leading-6 font-bold"
+        >
           OR
           <span class="block">Drop your images here </span>
         </p>

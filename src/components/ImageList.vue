@@ -32,7 +32,9 @@ const formatBytes = (bytes: number, decimals = 2) => {
   return `${parseFloat(value.toFixed(decimals))} ${sizes[unitIndex]}`;
 };
 
-const { open, onChange } = useFileDialog();
+const { open, onChange } = useFileDialog({
+  accept: "image/*",
+});
 
 onChange((files) => {
   if (!files) return;
@@ -57,7 +59,7 @@ onChange((files) => {
 <template>
   <div class="mt-10 text-white">
     <button
-      class="flex items-center gap-x-0.5 bg-emerald-500 px-2 py-1 rounded-t-md"
+      class="flex items-center gap-x-0.5 bg-emerald-400 hover:brightness-120 text-neutral-900 font-bold px-2 py-1 cursor-pointer rounded-t-md"
       @click="() => open()"
     >
       <Plus class="w-5 h-5" />
@@ -80,34 +82,36 @@ onChange((files) => {
           }}</span>
         </p>
 
-        <button
+        <!-- <button
           class="barber-sign w-40 h-6 text-neutral-900 font-bold rounded-lg select-none"
         >
           <p class="text-sm">LOADING</p>
-        </button>
+        </button> -->
 
         <div
-          class="flex items-center gap-x-0.5 text-sm font-bold text-neutral-900"
+          class="flex items-center gap-x-0.5 ml-auto mr-3 text-sm font-bold text-neutral-900"
         >
-          <button class="px-1 py-0.5 bg-emerald-400 rounded-lg">PNG</button>
+          <span class="px-1 py-0.5 bg-neutral-500 rounded-lg">PNG</span>
           <ArrowRight class="w-5 h-5 text-neutral-50" />
-          <TooltipTrigger text="tet">
-            <button class="px-1 py-0.5 bg-emerald-400 rounded-lg">SVG</button>
-          </TooltipTrigger>
+          <button
+            class="px-1 py-0.5 bg-emerald-400 hover:brightness-120 hover:scale-105 transition-all rounded-lg cursor-pointer"
+          >
+            SVG
+          </button>
         </div>
 
         <!-- Buttons -->
         <div class="flex items-center">
-          <button
+          <!-- <button
             class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
           >
             <Download class="w-5 h-5 group-hover:text-emerald-500" />
-          </button>
-          <button
+          </button> -->
+          <!-- <button
             class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
           >
             <Copy class="w-5 h-5 group-hover:text-blue-500" />
-          </button>
+          </button> -->
           <button
             class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
             @click="$emit('delete', index)"
@@ -122,7 +126,7 @@ onChange((files) => {
 
       <div class="flex items-center gap-x-2 mr-0.5">
         <button
-          class="px-3 py-1.5 bg-emerald-400 text-sm text-neutral-900 font-bold uppercase tracking-wide rounded-md"
+          class="px-3 py-1.5 bg-emerald-400 hover:brightness-120 text-sm text-neutral-900 font-bold uppercase tracking-wide cursor-pointer rounded-md"
         >
           Convert
         </button>

@@ -5,7 +5,7 @@
 ✔ Add `release.config.cjs` file @done(26-02-17 08:09)
 
 ## High Priority
-☐ Fix minor UI issues
+✔ Fix minor UI issues @started(26-02-17 08:18) @done(26-02-17 08:26) @lasted(8m15s)
 ☐ Detect the image type for all uploaded images
 ☐ Add the image conversion function for browser version
     ☐ Install magick-wasm
