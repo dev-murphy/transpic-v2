@@ -2,7 +2,10 @@
 import type { Image } from "../../types";
 
 const props = defineProps<{ modelValue: Image[] }>();
-const emit = defineEmits<{ (e: "update:modelValue", value: Image[]): void }>();
+const emit = defineEmits<{
+  (e: "update:modelValue", value: Image[]): void;
+  (e: "delete", value?: number): void;
+}>();
 
 const truncatedName = (imageName: string, truncatedLength = 4) => {
   let filename = imageName.split(".")[0];
@@ -63,6 +66,7 @@ onChange((files) => {
     <div class="max-h-[700px] overflow-y-auto">
       <div
         v-for="(image, index) in props.modelValue"
+        :key="index"
         class="w-[700px] flex items-center justify-between py-1.5 px-2"
         :class="{
           'bg-neutral-700': index % 2 === 0,
@@ -87,23 +91,26 @@ onChange((files) => {
         >
           <button class="px-1 py-0.5 bg-emerald-400 rounded-lg">PNG</button>
           <ArrowRight class="w-5 h-5 text-neutral-50" />
-          <button class="px-1 py-0.5 bg-emerald-400 rounded-lg">SVG</button>
+          <TooltipTrigger text="tet">
+            <button class="px-1 py-0.5 bg-emerald-400 rounded-lg">SVG</button>
+          </TooltipTrigger>
         </div>
 
         <!-- Buttons -->
-        <div>
+        <div class="flex items-center">
           <button
-            class="group p-1 hover:bg-neutral-900 rounded-md cursor-pointer"
+            class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
           >
             <Download class="w-5 h-5 group-hover:text-emerald-500" />
           </button>
           <button
-            class="group p-1 hover:bg-neutral-900 rounded-md cursor-pointer"
+            class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
           >
             <Copy class="w-5 h-5 group-hover:text-blue-500" />
           </button>
           <button
-            class="group p-1 hover:bg-neutral-900 rounded-md cursor-pointer"
+            class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
+            @click="$emit('delete', index)"
           >
             <Trash class="w-5 h-5 group-hover:text-red-500" />
           </button>
@@ -121,6 +128,7 @@ onChange((files) => {
         </button>
         <button
           class="group p-1 hover:bg-neutral-900 rounded-md cursor-pointer"
+          @click="$emit('delete')"
         >
           <Trash class="w-5 h-5 group-hover:text-red-500" />
         </button>
