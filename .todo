@@ -2,7 +2,7 @@
 
 ## Semantic Release
 ☐ Install semantic release dependencies
-☐ Add `release.config.cjs` file
+✔ Add `release.config.cjs` file @done(26-02-17 08:09)
 
 ## High Priority
 ☐ Fix minor UI issues
