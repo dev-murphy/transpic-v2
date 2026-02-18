@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { Image } from "../../types";
-import { detechImageType } from "../utils";
+import type { Image } from "../types";
+import { createDownloadLink, detechImageType } from "../utils";
+import ConverterWorker from "../workers/converter?worker";
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
@@ -33,6 +34,31 @@ const formatBytes = (bytes: number, decimals = 2) => {
   return `${parseFloat(value.toFixed(decimals))} ${sizes[unitIndex]}`;
 };
 
+let converterWorker = new ConverterWorker();
+function convertInWorker(index: number, buffer: ArrayBuffer, format: string) {
+  converterWorker.postMessage({
+    fileBuffer: buffer,
+    format,
+  });
+
+  converterWorker.addEventListener("message", (event) => {
+    if (props.modelValue[index]) {
+      props.modelValue[index].link = createDownloadLink(
+        new Blob([event.data.output], { type: "image/webp" }),
+      );
+
+      props.modelValue[index].loading = false;
+    }
+  });
+}
+
+function convertImages() {
+  props.modelValue.forEach(async (image, index) => {
+    image.loading = true;
+    await convertInWorker(index, image.content, "webp");
+  });
+}
+
 const { open, onChange } = useFileDialog({
   accept: "image/*",
 });
@@ -51,7 +77,10 @@ onChange(async (files) => {
       images.push({
         name: currentFile.name,
         size: currentFile.size,
+        content: await currentFile.arrayBuffer(),
         type,
+        link: "",
+        loading: false,
       });
     }
   }
@@ -69,6 +98,7 @@ onChange(async (files) => {
       <Plus class="w-5 h-5" />
       Add More Images
     </button>
+
     <div class="max-h-[700px] overflow-y-auto">
       <div
         v-for="(image, index) in props.modelValue"
@@ -86,13 +116,15 @@ onChange(async (files) => {
           }}</span>
         </p>
 
-        <!-- <button
-          class="barber-sign w-40 h-6 text-neutral-900 font-bold rounded-lg select-none"
+        <button
+          v-if="image.loading"
+          class="barber-sign w-40 h-6 text-neutral-900 font-bold rounded-lg select-none ml-auto"
         >
           <p class="text-sm">LOADING</p>
-        </button> -->
+        </button>
 
         <div
+          v-else-if="!image.link"
           class="flex items-center gap-x-0.5 ml-auto mr-3 text-sm font-bold text-neutral-900"
         >
           <span class="px-1 py-0.5 bg-neutral-500 uppercase rounded-lg">{{
@@ -108,11 +140,14 @@ onChange(async (files) => {
 
         <!-- Buttons -->
         <div class="flex items-center">
-          <!-- <button
+          <a
+            v-if="image.link"
+            :href="image.link"
+            :download="`${image.name.split('.')[0]}.webp`"
             class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
           >
             <Download class="w-5 h-5 group-hover:text-emerald-500" />
-          </button> -->
+          </a>
           <!-- <button
             class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
           >
@@ -133,6 +168,7 @@ onChange(async (files) => {
       <div class="flex items-center gap-x-2 mr-0.5">
         <button
           class="px-3 py-1.5 bg-emerald-400 hover:brightness-120 text-sm text-neutral-900 font-bold uppercase tracking-wide cursor-pointer rounded-md"
+          @click="convertImages"
         >
           Convert
         </button>

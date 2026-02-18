@@ -56,3 +56,7 @@ export async function detechImageType(file: File | Blob) {
 
   return "unknown";
 }
+
+export function createDownloadLink(blob: Blob) {
+  return URL.createObjectURL(blob);
+}

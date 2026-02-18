@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Image } from "../../types";
+import type { Image } from "../types";
 import { detechImageType } from "../utils";
 
 const props = defineProps<{ modelValue: Image[] }>();
@@ -25,7 +25,10 @@ onChange(async (files) => {
       images.value.push({
         name: currentFile.name,
         size: currentFile.size,
+        content: await currentFile.arrayBuffer(),
         type,
+        link: "",
+        loading: false,
       });
     }
   }
@@ -41,7 +44,10 @@ const onDrop = (files: File[] | null) => {
     images.value?.push({
       name: file.name,
       size: file.size,
+      content: await file.arrayBuffer(),
       type,
+      link: "",
+      loading: false
     });
   });
 
