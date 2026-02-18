@@ -55,7 +55,8 @@ function convertInWorker(index: number, buffer: ArrayBuffer, format: string) {
 function convertImages() {
   props.modelValue.forEach(async (image, index) => {
     image.loading = true;
-    await convertInWorker(index, image.content, "webp");
+    const desiredFormat = image.type === "webp" ? "png" : "webp";
+    await convertInWorker(index, image.content, desiredFormat);
   });
 }
 
