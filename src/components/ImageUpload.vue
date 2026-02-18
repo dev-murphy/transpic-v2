@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Image } from "../types";
-import { detechImageType } from "../utils";
+import type { Image } from "@/types";
+import { detechImageType } from "@/utils";
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
@@ -47,7 +47,7 @@ const onDrop = (files: File[] | null) => {
       content: await file.arrayBuffer(),
       type,
       link: "",
-      loading: false
+      loading: false,
     });
   });
 

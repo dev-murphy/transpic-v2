@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { Image } from "../types";
-import { createDownloadLink, detechImageType } from "../utils";
-import ConverterWorker from "../workers/converter?worker";
+import type { Image } from "@/types";
+import { createDownloadLink, detechImageType } from "@/utils";
+import ConverterWorker from "@/lib/converter?worker";
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
