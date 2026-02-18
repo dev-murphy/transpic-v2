@@ -11,6 +11,9 @@ importers:
 
   .:
     dependencies:
+      '@imagemagick/magick-wasm':
+        specifier: ^0.0.38
+        version: 0.0.38
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.1.18(vite@8.0.0-beta.14(@types/node@24.10.13)(jiti@2.6.1))
@@ -248,6 +251,9 @@ packages:
 
   '@emnapi/wasi-threads@1.1.0':
     resolution: {integrity: sha512-WI0DdZ8xFSbgMjR1sFsKABJ/C5OnRrjT06JXbZKexJGrDuPTzZdDYfFlsgcCXCyf+suG5QU2e/y1Wo2V/OapLQ==}
+
+  '@imagemagick/magick-wasm@0.0.38':
+    resolution: {integrity: sha512-xg3q6ZMqUADyyy0h/1IndT9DUWUXY5lRhevF2WB+AYvphJ5yraH+R0IGO7H7DFnLSMrJ6zsxEbXfOnhNfark9w==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2727,6 +2733,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
+
+  '@imagemagick/magick-wasm@0.0.38': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:

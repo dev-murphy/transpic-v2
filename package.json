@@ -10,6 +10,7 @@
   },
   "packageManager": "pnpm@10.29.3",
   "dependencies": {
+    "@imagemagick/magick-wasm": "^0.0.38",
     "@tailwindcss/vite": "^4.1.18",
     "@vueuse/core": "^14.2.1",
     "tailwindcss": "^4.1.18",
