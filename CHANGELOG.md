@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.3.1](https://github.com/dev-murphy/transpic-v2/compare/v1.3.0...v1.3.1) (2026-02-19)
+
+### 🐛 Bug Fixes
+
+* add correct way to batch convert, add size percentage ([c5f305c](https://github.com/dev-murphy/transpic-v2/commit/c5f305c2029dc5f592cab2d352a2c97660ffafd6))
+
+### ⚙️ CI/CD
+
+* add npm section to release config file ([a6afeb5](https://github.com/dev-murphy/transpic-v2/commit/a6afeb5e33ed106c6a4eefbf7bafaf4a240715c5))
+
 ## [1.3.0](https://github.com/dev-murphy/transpic-v2/compare/v1.2.1...v1.3.0) (2026-02-19)
 
 ### ✨ Features
