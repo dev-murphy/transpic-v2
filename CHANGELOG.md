@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.3](https://github.com/dev-murphy/transpic-v2/compare/v1.3.2...v1.3.3) (2026-02-19)
+
+### 🧹 Miscellaneous
+
+* add copyright to footer ([790e2cf](https://github.com/dev-murphy/transpic-v2/commit/790e2cf1f83be57bc34738787c39d5747fba66ab))
+* add seo meta tags and google fonts ([546d70b](https://github.com/dev-murphy/transpic-v2/commit/546d70b83deff67bafe1dff33f2719c958e82c5d))
+
+### 🔨 Code Refactors
+
+* ensure magick-wasm file is initialized ([14d251d](https://github.com/dev-murphy/transpic-v2/commit/14d251d5b9e5e64d8fc673d50966be4fa1b92949))
+
 ## [1.3.2](https://github.com/dev-murphy/transpic-v2/compare/v1.3.1...v1.3.2) (2026-02-19)
 
 ### 📖 Documentation
