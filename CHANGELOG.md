@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/dev-murphy/transpic-v2/compare/v1.3.1...v1.3.2) (2026-02-19)
+
+### 📖 Documentation
+
+* add additional information to package.json ([e4d4aa1](https://github.com/dev-murphy/transpic-v2/commit/e4d4aa161161bee252cdbda26054135b3aa62b72))
+* add MIT license ([f0c1d29](https://github.com/dev-murphy/transpic-v2/commit/f0c1d29e2d0f825b82ba29f1ab9f130a32996016))
+
 ## [1.3.1](https://github.com/dev-murphy/transpic-v2/compare/v1.3.0...v1.3.1) (2026-02-19)
 
 ### 🐛 Bug Fixes
