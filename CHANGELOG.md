@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.3.0](https://github.com/dev-murphy/transpic-v2/compare/v1.2.1...v1.3.0) (2026-02-19)
+
+### ✨ Features
+
+* add basic converter functionality ([866a7bd](https://github.com/dev-murphy/transpic-v2/commit/866a7bde1c113150061aa8edf10814ce7c2ea986))
+* create favicons and add to app ([6dc1f2e](https://github.com/dev-murphy/transpic-v2/commit/6dc1f2e2d25f1e254815696bd5db700f3676d1c5))
+* install magick-wasm dependencies ([41b755a](https://github.com/dev-murphy/transpic-v2/commit/41b755a1da28af8b78faad8f7a7de6af13cfeda4))
+
+### 🐛 Bug Fixes
+
+* add alias to tsconfig.app.json file ([e5ad3f5](https://github.com/dev-murphy/transpic-v2/commit/e5ad3f56fd78ff2ee5fa2d0fc03abaafc21ec86c))
+
+### 🧹 Miscellaneous
+
+* add function to detect file type using magic bytes ([365b80f](https://github.com/dev-murphy/transpic-v2/commit/365b80f8887fdd463904e83dc58d13b1c6a5353f))
+* add temporarily type conversion ([d0c59bd](https://github.com/dev-murphy/transpic-v2/commit/d0c59bd133e3577a1cc15501ed18593685041be9))
+* move to lib folder ([054c389](https://github.com/dev-murphy/transpic-v2/commit/054c3897f0e344aa0bb6924a970f53cac0daba73))
+* move types to be in src folder ([338263c](https://github.com/dev-murphy/transpic-v2/commit/338263c9dd3ab6daf486305c2e5acb65d76943b3))
+* remove unused file ([a5e350e](https://github.com/dev-murphy/transpic-v2/commit/a5e350e32f3de7dda4cb07fc385608d268d5f67c))
+
 ## [1.2.1](https://github.com/dev-murphy/transpic-v2/compare/v1.2.0...v1.2.1) (2026-02-17)
 
 ### 🐛 Bug Fixes
