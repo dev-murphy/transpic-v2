@@ -4,7 +4,7 @@ import type { Data } from "../types";
 let initialized = false;
 
 self.onmessage = async (event: MessageEvent<Data>) => {
-  const { fileBuffer, format } = event.data;
+  const { id, fileBuffer, format } = event.data;
 
   if (!initialized) {
     const res = await fetch("/magick.wasm");
@@ -15,7 +15,7 @@ self.onmessage = async (event: MessageEvent<Data>) => {
 
   ImageMagick.read(new Uint8Array(fileBuffer), (image) => {
     image.write(format, (output) => {
-      self.postMessage({ output });
+      self.postMessage({ id, output });
     });
   });
 };

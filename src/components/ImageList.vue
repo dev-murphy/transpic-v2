@@ -34,30 +34,46 @@ const formatBytes = (bytes: number, decimals = 2) => {
   return `${parseFloat(value.toFixed(decimals))} ${sizes[unitIndex]}`;
 };
 
+const newFiles = ref<{ name: string; size: number }[]>([]);
 let converterWorker = new ConverterWorker();
+
 function convertInWorker(index: number, buffer: ArrayBuffer, format: string) {
+  console.log(format);
   converterWorker.postMessage({
+    id: index,
     fileBuffer: buffer,
     format,
   });
 
   converterWorker.addEventListener("message", (event) => {
+    let index = event.data.id;
     if (props.modelValue[index]) {
-      props.modelValue[index].link = createDownloadLink(
-        new Blob([event.data.output], { type: "image/webp" }),
-      );
+      const blob = new Blob([event.data.output], { type: `image/${format}` });
+      newFiles.value[index] = {
+        size: blob.size,
+        name: `${props.modelValue[index].name.split(".")[0]}.${format}`,
+      };
 
+      props.modelValue[index].link = createDownloadLink(blob);
       props.modelValue[index].loading = false;
     }
   });
 }
 
 function convertImages() {
-  props.modelValue.forEach(async (image, index) => {
-    image.loading = true;
-    const desiredFormat = image.type === "webp" ? "png" : "webp";
-    await convertInWorker(index, image.content, desiredFormat);
-  });
+  for (let i = 0; i <= props.modelValue.length; i++) {
+    const currentImage = props.modelValue[i];
+    if (currentImage) {
+      currentImage.loading = true;
+      const desiredFormat = currentImage.type === "webp" ? "png" : "webp";
+      convertInWorker(i, currentImage.content, desiredFormat);
+    }
+  }
+}
+
+function compareSize(oldSize: number, newSize: number) {
+  console.log((oldSize - newSize) / oldSize);
+  return ((newSize / oldSize) * 100).toFixed(2);
 }
 
 const { open, onChange } = useFileDialog({
@@ -110,12 +126,15 @@ onChange(async (files) => {
           'bg-neutral-800': index % 2 !== 0,
         }"
       >
-        <p class="flex flex-col text-lg">
-          <span class="font-mono">{{ truncatedName(image.name, 10) }}</span>
-          <span class="text-sm text-emerald-500 font-bold">{{
-            formatBytes(image.size)
-          }}</span>
-        </p>
+        <div class="flex flex-col text-lg">
+          <p class="font-mono">{{ truncatedName(image.name, 10) }}</p>
+          <p class="text-sm text-emerald-500 font-bold">
+            {{ formatBytes(image.size) }}
+            <span v-if="newFiles[index]" class="text-neutral-400">
+              ({{ compareSize(image.size, newFiles[index].size) }}%)
+            </span>
+          </p>
+        </div>
 
         <button
           v-if="image.loading"
@@ -144,7 +163,7 @@ onChange(async (files) => {
           <a
             v-if="image.link"
             :href="image.link"
-            :download="`${image.name.split('.')[0]}.webp`"
+            :download="`${image.name.split('.')[0]}.${image.type === 'webp' ? 'png' : 'webp'}`"
             class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
           >
             <Download class="w-5 h-5 group-hover:text-emerald-500" />
