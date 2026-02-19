@@ -1,17 +1,20 @@
 import { initializeImageMagick, ImageMagick } from "@imagemagick/magick-wasm";
-import type { Data } from "../types";
+import type { Data } from "@/types";
 
-let initialized = false;
+let initPromise: Promise<void> | null = null;
+
+function getInitPromise() {
+  if (!initPromise) {
+    initPromise = fetch("/magick.wasm")
+      .then((res) => res.arrayBuffer())
+      .then((wasm) => initializeImageMagick(wasm));
+  }
+  return initPromise;
+}
 
 self.onmessage = async (event: MessageEvent<Data>) => {
   const { id, fileBuffer, format } = event.data;
-
-  if (!initialized) {
-    const res = await fetch("/magick.wasm");
-    const wasm = await res.arrayBuffer();
-    await initializeImageMagick(wasm);
-    initialized = true;
-  }
+  await getInitPromise();
 
   ImageMagick.read(new Uint8Array(fileBuffer), (image) => {
     image.write(format, (output) => {
