@@ -7,7 +7,10 @@
 ## High Priority
 ✔ Fix minor UI issues @started(26-02-17 08:18) @done(26-02-17 08:26) @lasted(8m15s)
 ✔ Detect the image type for all uploaded images @started(26-02-17 08:33) @done(26-02-17 09:04) @lasted(31m41s)
-☐ Add the image conversion function for browser version
+✔ Add the image conversion function for browser version @done(26-02-19 21:30)
     ✔ Install magick-wasm @started(26-02-17 19:14) @done(26-02-17 19:14) @lasted(50s)
     ☐ Create generic class to handle image conversion
-
+    ☐ Add sharp after install electron for vite
+☐ Add dark/light theme
+☐ Add page load transition
+☐ Update fonts for app
