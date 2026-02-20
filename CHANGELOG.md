@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.4](https://github.com/dev-murphy/transpic-v2/compare/v1.3.3...v1.3.4) (2026-02-20)
+
+### ⚙️ CI/CD
+
+* add vercel json ([ad81153](https://github.com/dev-murphy/transpic-v2/commit/ad8115324075df613318026238672bb6d2aacf68))
+
 ## [1.3.3](https://github.com/dev-murphy/transpic-v2/compare/v1.3.2...v1.3.3) (2026-02-19)
 
 ### 🧹 Miscellaneous
