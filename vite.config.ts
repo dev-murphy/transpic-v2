@@ -15,6 +15,7 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/],
       imports: ["vue", "@vueuse/core"],
       dts: "src/auto-imports.d.ts",
+      dirs: ["src/stores"],
     }),
     Components({
       extensions: ["vue"],
@@ -28,7 +29,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-    "@/": `${path.resolve(__dirname, "src")}/`,
+      "@/": `${path.resolve(__dirname, "src")}/`,
     },
   },
 });

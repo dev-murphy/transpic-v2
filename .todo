@@ -11,6 +11,6 @@
     ✔ Install magick-wasm @started(26-02-17 19:14) @done(26-02-17 19:14) @lasted(50s)
     ☐ Create generic class to handle image conversion
     ☐ Add sharp after install electron for vite
-☐ Add dark/light theme
+✔ Add dark/light theme @done(26-02-20 12:02)
 ☐ Add page load transition
 ☐ Update fonts for app

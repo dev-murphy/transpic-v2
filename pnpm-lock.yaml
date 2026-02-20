@@ -20,6 +20,12 @@ importers:
       '@vueuse/core':
         specifier: ^14.2.1
         version: 14.2.1(vue@3.5.28(typescript@5.9.3))
+      animejs:
+        specifier: ^4.3.6
+        version: 4.3.6
+      pinia:
+        specifier: ^3.0.4
+        version: 3.0.4(typescript@5.9.3)(vue@3.5.28(typescript@5.9.3))
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -651,13 +657,22 @@ packages:
   '@vue/compiler-ssr@3.5.28':
     resolution: {integrity: sha512-JCq//9w1qmC6UGLWJX7RXzrGpKkroubey/ZFqTpvEIDJEKGgntuDMqkuWiZvzTzTA5h2qZvFBFHY7fAAa9475g==}
 
+  '@vue/devtools-api@7.7.9':
+    resolution: {integrity: sha512-kIE8wvwlcZ6TJTbNeU2HQNtaxLx3a84aotTITUuL/4bzfPxzajGBOoqjMhwZJ8L9qFYDU/lAYMEEm11dnZOD6g==}
+
   '@vue/devtools-core@8.0.6':
     resolution: {integrity: sha512-fN7iVtpSQQdtMORWwVZ1JiIAKriinhD+lCHqPw9Rr252ae2TczILEmW0zcAZifPW8HfYcbFkn+h7Wv6kQQCayw==}
     peerDependencies:
       vue: ^3.0.0
 
+  '@vue/devtools-kit@7.7.9':
+    resolution: {integrity: sha512-PyQ6odHSgiDVd4hnTP+aDk2X4gl2HmLDfiyEnn3/oV+ckFDuswRs4IbBT7vacMuGdwY/XemxBoh302ctbsptuA==}
+
   '@vue/devtools-kit@8.0.6':
     resolution: {integrity: sha512-9zXZPTJW72OteDXeSa5RVML3zWDCRcO5t77aJqSs228mdopYj5AiTpihozbsfFJ0IodfNs7pSgOGO3qfCuxDtw==}
+
+  '@vue/devtools-shared@7.7.9':
+    resolution: {integrity: sha512-iWAb0v2WYf0QWmxCGy0seZNDPdO3Sp5+u78ORnyeonS6MT4PC7VPrryX2BpMJrwlDeaZ6BD4vP4XKjK0SZqaeA==}
 
   '@vue/devtools-shared@8.0.6':
     resolution: {integrity: sha512-Pp1JylTqlgMJvxW6MGyfTF8vGvlBSCAvMFaDCYa82Mgw7TT5eE5kkHgDvmOGHWeJE4zIDfCpCxHapsK2LtIAJg==}
@@ -725,6 +740,9 @@ packages:
 
   alien-signals@3.1.2:
     resolution: {integrity: sha512-d9dYqZTS90WLiU0I5c6DHj/HcKkF8ZyGN3G5x8wSbslulz70KOxaqCT0hQCo9KOyhVqzqGojvNdJXoTumZOtcw==}
+
+  animejs@4.3.6:
+    resolution: {integrity: sha512-rzZ4bDc8JAtyx6hYwxj7s5M/yWfnM5qqY4hZDnhy1cWFvMb6H5/necHS2sbCY3WQTDbRLuZL10dPXSxSCFOr/w==}
 
   ansi-escapes@7.3.0:
     resolution: {integrity: sha512-BvU8nYgGQBxcmMuEeUEmNTvrMVjJNSH7RgW24vXexN4Ven6qCvy4TntnvlnwnMLTVlcRQQdbRY8NKnaIoeWDNg==}
@@ -1918,6 +1936,9 @@ packages:
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
 
+  perfect-debounce@1.0.0:
+    resolution: {integrity: sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==}
+
   perfect-debounce@2.1.0:
     resolution: {integrity: sha512-LjgdTytVFXeUgtHZr9WYViYSM/g8MkcTPYDlPa3cDqMirHjKiSZPYd6DoL7pK8AJQr+uWkQvCjHNdiMqsrJs+g==}
 
@@ -1935,6 +1956,15 @@ packages:
   pify@3.0.0:
     resolution: {integrity: sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==}
     engines: {node: '>=4'}
+
+  pinia@3.0.4:
+    resolution: {integrity: sha512-l7pqLUFTI/+ESXn6k3nu30ZIzW5E2WZF/LaHJEpoq6ElcLD+wduZoB2kBN19du6K/4FDpPMazY2wJr+IndBtQw==}
+    peerDependencies:
+      typescript: '>=4.5.0'
+      vue: ^3.5.11
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   pkg-conf@2.1.0:
     resolution: {integrity: sha512-C+VUP+8jis7EsQZIhDYmS5qlNtjv2yP4SNtjXK9AP1ZcTRlnSfuumaTnRfYZnYgUUYVIKqL0fRvmUGDV2fmp6g==}
@@ -3159,6 +3189,10 @@ snapshots:
       '@vue/compiler-dom': 3.5.28
       '@vue/shared': 3.5.28
 
+  '@vue/devtools-api@7.7.9':
+    dependencies:
+      '@vue/devtools-kit': 7.7.9
+
   '@vue/devtools-core@8.0.6(vite@8.0.0-beta.14(@types/node@24.10.13)(jiti@2.6.1))(vue@3.5.28(typescript@5.9.3))':
     dependencies:
       '@vue/devtools-kit': 8.0.6
@@ -3171,6 +3205,16 @@ snapshots:
     transitivePeerDependencies:
       - vite
 
+  '@vue/devtools-kit@7.7.9':
+    dependencies:
+      '@vue/devtools-shared': 7.7.9
+      birpc: 2.9.0
+      hookable: 5.5.3
+      mitt: 3.0.1
+      perfect-debounce: 1.0.0
+      speakingurl: 14.0.1
+      superjson: 2.2.6
+
   '@vue/devtools-kit@8.0.6':
     dependencies:
       '@vue/devtools-shared': 8.0.6
@@ -3180,6 +3224,10 @@ snapshots:
       perfect-debounce: 2.1.0
       speakingurl: 14.0.1
       superjson: 2.2.6
+
+  '@vue/devtools-shared@7.7.9':
+    dependencies:
+      rfdc: 1.4.1
 
   '@vue/devtools-shared@8.0.6':
     dependencies:
@@ -3252,6 +3300,8 @@ snapshots:
       indent-string: 5.0.0
 
   alien-signals@3.1.2: {}
+
+  animejs@4.3.6: {}
 
   ansi-escapes@7.3.0:
     dependencies:
@@ -4236,6 +4286,8 @@ snapshots:
 
   pathe@2.0.3: {}
 
+  perfect-debounce@1.0.0: {}
+
   perfect-debounce@2.1.0: {}
 
   picocolors@1.1.1: {}
@@ -4245,6 +4297,13 @@ snapshots:
   picomatch@4.0.3: {}
 
   pify@3.0.0: {}
+
+  pinia@3.0.4(typescript@5.9.3)(vue@3.5.28(typescript@5.9.3)):
+    dependencies:
+      '@vue/devtools-api': 7.7.9
+      vue: 3.5.28(typescript@5.9.3)
+    optionalDependencies:
+      typescript: 5.9.3
 
   pkg-conf@2.1.0:
     dependencies:

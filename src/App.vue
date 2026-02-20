@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import type { Image } from "./types";
 
+// Theme controls
+const appStore = useAppStore();
+const mode = useColorMode();
+appStore.isDarkMode = mode.value === "dark";
+
+watch(
+  () => appStore.isDarkMode,
+  (darkMode) => {
+    mode.value = darkMode ? "dark" : "light";
+  },
+);
+
 const images = ref<Image[]>([]);
 
 const deleteImage = (id?: number) => {
@@ -16,6 +28,7 @@ const deleteImage = (id?: number) => {
   <div
     class="min-h-screen bg-neutral-900 flex flex-col items-center justify-center"
   >
+    <TheemToggle v-model="appStore.isDarkMode" />
     <TheHeading />
     <ImageUpload v-if="images.length === 0" v-model="images" />
     <ImageList v-else v-model="images" @delete="deleteImage" />
