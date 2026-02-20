@@ -71,9 +71,9 @@ function convertImages() {
   }
 }
 
-function compareSize(oldSize: number, newSize: number) {
-  console.log((oldSize - newSize) / oldSize);
-  return ((newSize / oldSize) * 100).toFixed(2);
+function compareSize(oldSize: number, newSize: number): string {
+  if (oldSize === 0) return "N/A";
+  return (((newSize - oldSize) / oldSize) * 100).toFixed(2);
 }
 
 const { open, onChange } = useFileDialog({
@@ -130,8 +130,23 @@ onChange(async (files) => {
           <p class="font-mono">{{ truncatedName(image.name, 10) }}</p>
           <p class="text-sm text-emerald-500 font-bold">
             {{ formatBytes(image.size) }}
-            <span v-if="newFiles[index]" class="text-neutral-400">
-              ({{ compareSize(image.size, newFiles[index].size) }}%)
+            <span
+              v-if="newFiles[index]"
+              :class="{
+                'text-red-500':
+                  compareSize(image.size, newFiles[index].size).charAt(0) !==
+                  '-',
+                'text-neutral-500':
+                  compareSize(image.size, newFiles[index].size).charAt(0) ===
+                  '-',
+              }"
+            >
+              ({{ compareSize(image.size, newFiles[index].size)
+              }}{{
+                compareSize(image.size, newFiles[index].size) !== "N/A"
+                  ? "%"
+                  : ""
+              }})
             </span>
           </p>
         </div>
