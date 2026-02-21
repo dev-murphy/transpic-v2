@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-4xl text-white font-bold mt-auto">
+  <h1 class="text-4xl text-neutral-800 dark:text-white font-bold mt-auto">
     Transpic - Image Converter & Compresser
   </h1>
 

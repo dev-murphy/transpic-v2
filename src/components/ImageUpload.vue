@@ -68,25 +68,26 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
       ref="dropzoneRef"
       class="w-full max-w-[700px] h-[500px] flex flex-col items-center justify-center border-4 border-dashed mt-10 select-none rounded-2xl"
       :class="{
-        'bg-neutral-800 border-neutral-600': !isOverDropZone,
+        'bg-neutral-200 dark:bg-neutral-800 border-neutral-400 dark:border-neutral-600':
+          !isOverDropZone,
         'bg-emerald-900 border-emerald-600': isOverDropZone,
       }"
     >
       <template v-if="!isOverDropZone">
+        <CloudDownload class="w-16 h-16 text-emerald-600" />
+        <p
+          class="pb-2 text-neutral-400 dark:text-neutral-500 text-lg text-center leading-6"
+        >
+          <span class="block font-bold text-2xl">Drop your image(s) here </span>
+          OR
+        </p>
         <button
           type="button"
           @click="() => open()"
-          class="bg-neutral-700 hover:brightness-110 active:brightness-90 flex items-center gap-x-1 px-4 py-2 text-white text-lg rounded-md scale-100 hover:scale-105 active:scale-100 transition-all cursor-pointer"
+          class="bg-emerald-500 dark:bg-neutral-700 hover:brightness-110 active:brightness-90 flex items-center gap-x-1 px-4 py-1.5 text-neutral-800 dark:text-white text-lg rounded-md scale-100 hover:scale-105 active:scale-100 transition-all cursor-pointer"
         >
-          <AddImage class="w-5 h-5 text-emerald-500" />
           Choose Image(s)
         </button>
-        <p
-          class="pt-1 text-neutral-500 text-lg text-center leading-6 font-bold"
-        >
-          OR
-          <span class="block">Drop your images here </span>
-        </p>
       </template>
       <template v-else>
         <h2 class="flex items-center gap-x-2 text-3xl text-white">

@@ -107,7 +107,7 @@ onChange(async (files) => {
 </script>
 
 <template>
-  <div class="mt-10 text-white">
+  <div class="mt-10 text-neutral-800 dark:text-white">
     <button
       class="flex items-center gap-x-0.5 bg-emerald-400 hover:brightness-120 text-neutral-900 font-bold px-2 py-1 cursor-pointer rounded-t-md"
       @click="() => open()"
@@ -116,27 +116,28 @@ onChange(async (files) => {
       Add More Images
     </button>
 
-    <div class="max-h-[700px] overflow-y-auto">
+    <div class="h-[500px] bg-neutral-200 dark:bg-neutral-800 overflow-y-auto">
       <div
         v-for="(image, index) in props.modelValue"
         :key="index"
         class="w-[700px] flex items-center justify-between py-1.5 px-2"
         :class="{
-          'bg-neutral-700': index % 2 === 0,
-          'bg-neutral-800': index % 2 !== 0,
+          'bg-neutral-200 dark:bg-neutral-700': index % 2 === 0,
+          'bg-neutral-300 dark:bg-neutral-800': index % 2 !== 0,
         }"
       >
         <div class="flex flex-col text-lg">
           <p class="font-mono">{{ truncatedName(image.name, 10) }}</p>
-          <p class="text-sm text-emerald-500 font-bold">
+          <p class="text-sm text-neutral-600 dark:text-neutral-400">
             {{ formatBytes(image.size) }}
             <span
               v-if="newFiles[index]"
+              class="font-bold"
               :class="{
                 'text-red-500':
                   compareSize(image.size, newFiles[index].size).charAt(0) !==
                   '-',
-                'text-neutral-500':
+                'text-green-600':
                   compareSize(image.size, newFiles[index].size).charAt(0) ===
                   '-',
               }"
@@ -162,12 +163,13 @@ onChange(async (files) => {
           v-else-if="!image.link"
           class="flex items-center gap-x-0.5 ml-auto mr-3 text-sm font-bold text-neutral-900"
         >
-          <span class="px-1 py-0.5 bg-neutral-500 uppercase rounded-lg">{{
-            image.type
-          }}</span>
-          <ArrowRight class="w-5 h-5 text-neutral-50" />
+          <span
+            class="px-1 py-0.5 bg-neutral-600 dark:bg-emerald-400 text-emerald-400 dark:text-neutral-900 uppercase rounded-lg select-none pointer-events-none"
+            >{{ image.type }}</span
+          >
+          <ArrowRight class="w-5 h-5 text-neutral-800 dark:text-neutral-50" />
           <button
-            class="px-1 py-0.5 bg-emerald-400 hover:brightness-120 hover:scale-105 transition-all rounded-lg cursor-pointer"
+            class="px-1 py-0.5 bg-neutral-600 dark:bg-emerald-400 text-emerald-400 dark:text-neutral-900 hover:brightness-120 hover:scale-105 transition-all rounded-lg cursor-pointer"
           >
             {{ image.type === "webp" ? "PNG" : "WEBP" }}
           </button>
@@ -179,9 +181,9 @@ onChange(async (files) => {
             v-if="image.link"
             :href="image.link"
             :download="`${image.name.split('.')[0]}.${image.type === 'webp' ? 'png' : 'webp'}`"
-            class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
+            class="group w-7 h-7 grid place-items-center hover:bg-blue-500/10 dark:hover:bg-neutral-900 rounded-md cursor-pointer"
           >
-            <Download class="w-5 h-5 group-hover:text-emerald-500" />
+            <Download class="w-5 h-5 group-hover:text-blue-500" />
           </a>
           <!-- <button
             class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
@@ -189,15 +191,17 @@ onChange(async (files) => {
             <Copy class="w-5 h-5 group-hover:text-blue-500" />
           </button> -->
           <button
-            class="group w-7 h-7 grid place-items-center hover:bg-neutral-900 rounded-md cursor-pointer"
+            class="group w-7 h-7 grid place-items-center hover:bg-red-500/10 dark:hover:bg-neutral-900 rounded-md cursor-pointer"
             @click="$emit('delete', index)"
           >
-            <Trash class="w-5 h-5 group-hover:text-red-500" />
+            <Close class="w-5 h-5 group-hover:text-red-500" />
           </button>
         </div>
       </div>
     </div>
-    <div class="bg-neutral-600 flex items-center justify-between py-3 px-2">
+    <div
+      class="bg-neutral-300 dark:bg-neutral-600 flex items-center justify-between py-3 px-2"
+    >
       <p>Added {{ modelValue.length }} files</p>
 
       <div class="flex items-center gap-x-2 mr-0.5">
@@ -208,10 +212,10 @@ onChange(async (files) => {
           Convert
         </button>
         <button
-          class="group p-1 hover:bg-neutral-900 rounded-md cursor-pointer"
+          class="group p-1 hover:bg-red-500/10 dark:hover:bg-neutral-900 rounded-md cursor-pointer"
           @click="$emit('delete')"
         >
-          <Trash class="w-5 h-5 group-hover:text-red-500" />
+          <Close class="w-5 h-5 group-hover:text-red-500" />
         </button>
       </div>
     </div>

@@ -13,6 +13,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddImage: typeof import('./components/icons/AddImage.vue')['default']
     ArrowRight: typeof import('./components/icons/ArrowRight.vue')['default']
+    Close: typeof import('./components/icons/Close.vue')['default']
+    CloudDownload: typeof import('./components/icons/CloudDownload.vue')['default']
     Copy: typeof import('./components/icons/Copy.vue')['default']
     Download: typeof import('./components/icons/Download.vue')['default']
     ImageList: typeof import('./components/ImageList.vue')['default']
