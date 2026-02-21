@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.4.0](https://github.com/dev-murphy/transpic-v2/compare/v1.3.4...v1.4.0) (2026-02-21)
+
+### ✨ Features
+
+* add light theme colors to app ([71efaef](https://github.com/dev-murphy/transpic-v2/commit/71efaefc8f7ce91b2f685c58b823d7cf017e0177))
+
+### 🧹 Miscellaneous
+
+* add dark/theme functionality ([0f88921](https://github.com/dev-murphy/transpic-v2/commit/0f88921a5dcd966872b097edb264676b8752b16a))
+
+### 🔨 Code Refactors
+
+* correct percentage calculation, update how it is rendered ([0b75637](https://github.com/dev-murphy/transpic-v2/commit/0b75637a9ef4e6408f2ef2946ab2cdd86c144875))
+* use `@/` alias for main, update todo file ([6f3c12d](https://github.com/dev-murphy/transpic-v2/commit/6f3c12d36f1684820d0afc60c2aca243daac5c49))
+
 ## [1.3.4](https://github.com/dev-murphy/transpic-v2/compare/v1.3.3...v1.3.4) (2026-02-20)
 
 ### ⚙️ CI/CD
