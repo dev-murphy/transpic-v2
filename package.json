@@ -1,7 +1,7 @@
 {
   "name": "transpic-v2",
   "private": true,
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "description": "A (web | electron) app that convert images",
   "author": "Murphy Facey <>",

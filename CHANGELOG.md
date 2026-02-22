@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.1](https://github.com/dev-murphy/transpic-v2/compare/v1.4.0...v1.4.1) (2026-02-22)
+
+### 💅 UI Updates
+
+* add mobile responsiveness ([7713060](https://github.com/dev-murphy/transpic-v2/commit/771306027d19dcf0a650d02b4a0b66b964f8a839))
+
 ## [1.4.0](https://github.com/dev-murphy/transpic-v2/compare/v1.3.4...v1.4.0) (2026-02-21)
 
 ### ✨ Features
