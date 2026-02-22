@@ -2,12 +2,17 @@
 import type { Image } from "@/types";
 import { createDownloadLink, detechImageType } from "@/utils";
 import ConverterWorker from "@/lib/converter?worker";
+import { breakpointsTailwind } from "@vueuse/core";
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
   (e: "update:modelValue", value: Image[]): void;
   (e: "delete", value?: number): void;
 }>();
+
+// add breakpoints props
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const isMobile = breakpoints.smaller("md");
 
 const truncatedName = (imageName: string, truncatedLength = 4) => {
   let filename = imageName.split(".")[0];
@@ -107,28 +112,30 @@ onChange(async (files) => {
 </script>
 
 <template>
-  <div class="mt-10 text-neutral-800 dark:text-white">
+  <div class="w-full mt-10 text-neutral-800 dark:text-white">
     <button
-      class="flex items-center gap-x-0.5 bg-emerald-400 hover:brightness-120 text-neutral-900 font-bold px-2 py-1 cursor-pointer rounded-t-md"
+      class="flex items-center gap-x-0.5 bg-emerald-400 hover:brightness-120 px-2 py-1 text-sm md:text-base text-neutral-900 font-bold cursor-pointer rounded-t-md"
       @click="() => open()"
     >
-      <Plus class="w-5 h-5" />
+      <Plus v-if="!isMobile" class="w-5 h-5" />
       Add More Images
     </button>
 
-    <div class="h-[500px] bg-neutral-200 dark:bg-neutral-800 overflow-y-auto">
+    <div class="bg-neutral-200 dark:bg-neutral-800 overflow-y-auto">
       <div
         v-for="(image, index) in props.modelValue"
         :key="index"
-        class="w-[700px] flex items-center justify-between py-1.5 px-2"
+        class="flex items-center justify-between py-1.5 px-2"
         :class="{
           'bg-neutral-200 dark:bg-neutral-700': index % 2 === 0,
           'bg-neutral-300 dark:bg-neutral-800': index % 2 !== 0,
         }"
       >
-        <div class="flex flex-col text-lg">
-          <p class="font-mono">{{ truncatedName(image.name, 10) }}</p>
-          <p class="text-sm text-neutral-600 dark:text-neutral-400">
+        <div class="flex flex-col text-base md:text-lg">
+          <p class="font-mono">
+            {{ truncatedName(image.name, isMobile ? 4 : 10) }}
+          </p>
+          <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400">
             {{ formatBytes(image.size) }}
             <span
               v-if="newFiles[index]"
@@ -161,13 +168,17 @@ onChange(async (files) => {
 
         <div
           v-else-if="!image.link"
-          class="flex items-center gap-x-0.5 ml-auto mr-3 text-sm font-bold text-neutral-900"
+          class="flex items-center gap-x-0.5 ml-auto mr-2 md:mr-3 text-xs md:text-sm font-bold text-neutral-900"
         >
           <span
+            v-if="!isMobile"
             class="px-1 py-0.5 bg-neutral-600 dark:bg-emerald-400 text-emerald-400 dark:text-neutral-900 uppercase rounded-lg select-none pointer-events-none"
             >{{ image.type }}</span
           >
-          <ArrowRight class="w-5 h-5 text-neutral-800 dark:text-neutral-50" />
+          <ArrowRight
+            v-if="!isMobile"
+            class="w-5 h-5 text-neutral-800 dark:text-neutral-50"
+          />
           <button
             class="px-1 py-0.5 bg-neutral-600 dark:bg-emerald-400 text-emerald-400 dark:text-neutral-900 hover:brightness-120 hover:scale-105 transition-all rounded-lg cursor-pointer"
           >
@@ -202,11 +213,11 @@ onChange(async (files) => {
     <div
       class="bg-neutral-300 dark:bg-neutral-600 flex items-center justify-between py-3 px-2"
     >
-      <p>Added {{ modelValue.length }} files</p>
+      <p class="text-sm md:text-base">Added {{ modelValue.length }} files</p>
 
       <div class="flex items-center gap-x-2 mr-0.5">
         <button
-          class="px-3 py-1.5 bg-emerald-400 hover:brightness-120 text-sm text-neutral-900 font-bold uppercase tracking-wide cursor-pointer rounded-md"
+          class="px-3 py-1.5 bg-emerald-400 hover:brightness-120 text-xs md:text-sm text-neutral-900 font-bold uppercase tracking-wide cursor-pointer rounded-md"
           @click="convertImages"
         >
           Convert

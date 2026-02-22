@@ -26,22 +26,29 @@ const deleteImage = (id?: number) => {
 
 <template>
   <div
-    class="min-h-screen bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center justify-center"
+    class="min-h-screen bg-neutral-100 dark:bg-neutral-900 px-4 flex flex-col items-center justify-center"
   >
     <TheemToggle v-model="appStore.isDarkMode" />
     <TheHeading />
     <ImageUpload v-if="images.length === 0" v-model="images" />
     <ImageList v-else v-model="images" @delete="deleteImage" />
 
-    <p class="mt-auto mb-3 text-sm text-neutral-400">
-      Copyright ©{{ new Date().getFullYear() }} Transpic v2 | All rights
-      reserved | Made with ❤️ by
-      <a
-        href="https://github.com/dev-murphy"
-        target="_blank"
-        class="hover:text-emerald-500 underline"
-        >Murphy Facey (Dev)</a
-      >
+    <p
+      class="mt-auto mb-3 pt-3 md:divide-x md:divide-neuetral-400 text-center text-sm text-neutral-400"
+    >
+      <span class="block md:inline">
+        Copyright ©{{ new Date().getFullYear() }} Transpic v2 | All rights
+        reserved
+      </span>
+      <span>
+        Made with ❤️ by
+        <a
+          href="https://github.com/dev-murphy"
+          target="_blank"
+          class="hover:text-emerald-500 underline"
+          >Murphy Facey (Dev)</a
+        >
+      </span>
     </p>
   </div>
 </template>

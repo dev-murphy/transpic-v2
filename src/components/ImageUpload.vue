@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import type { Image } from "@/types";
 import { detechImageType } from "@/utils";
+import { breakpointsTailwind } from "@vueuse/core";
+
+// Add mobile screen breaking points
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const isMobile = breakpoints.smaller("md");
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
@@ -65,6 +70,7 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
 <template>
   <div class="w-screen flex flex-col items-center px-3">
     <div
+      v-if="!isMobile"
       ref="dropzoneRef"
       class="w-full max-w-[700px] h-[500px] flex flex-col items-center justify-center border-4 border-dashed mt-10 select-none rounded-2xl"
       :class="{
@@ -95,6 +101,20 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
           Drop images here
         </h2>
       </template>
+    </div>
+
+    <div v-else class="w-full mt-10">
+      <p class="text-center dark:text-white pb-2">
+        Upload any image(s) you want to convert
+      </p>
+      <button
+        type="button"
+        @click="() => open()"
+        class="w-full bg-linear-to-b from-emerald-500 to-emerald-700 border border-emerald-500 flex items-center justify-center gap-x-1 py-2 text-white rounded-lg inset-shadow-sm inset-shadow-emerald-200"
+      >
+        <AddImage class="w-5 h-5" />
+        Choose Image(s)
+      </button>
     </div>
   </div>
 </template>
