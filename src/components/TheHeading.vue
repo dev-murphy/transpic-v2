@@ -1,7 +1,7 @@
 <template>
-  <div class="pt-20">
+  <div class="pt-20 mt-auto">
     <h1
-      class="text-2xl md:stext-4xl text-center text-neutral-800 dark:text-white font-bold mt-auto"
+      class="text-2xl md:text-4xl text-center text-neutral-800 dark:text-white font-bold"
     >
       Transpic - Image Converter
     </h1>

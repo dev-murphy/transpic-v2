@@ -112,7 +112,7 @@ onChange(async (files) => {
 </script>
 
 <template>
-  <div class="w-full mt-10 text-neutral-800 dark:text-white">
+  <div class="w-full max-w-[700px] mt-10 text-neutral-800 dark:text-white">
     <button
       class="flex items-center gap-x-0.5 bg-emerald-400 hover:brightness-120 px-2 py-1 text-sm md:text-base text-neutral-900 font-bold cursor-pointer rounded-t-md"
       @click="() => open()"
@@ -133,7 +133,7 @@ onChange(async (files) => {
       >
         <div class="flex flex-col text-base md:text-lg">
           <p class="font-mono">
-            {{ truncatedName(image.name, isMobile ? 4 : 10) }}
+            {{ truncatedName(image.name, isMobile ? 6 : 10) }}
           </p>
           <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400">
             {{ formatBytes(image.size) }}
