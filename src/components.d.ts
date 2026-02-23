@@ -25,7 +25,6 @@ declare module 'vue' {
     Sun: typeof import('./components/icons/Sun.vue')['default']
     TheemToggle: typeof import('./components/common/TheemToggle.vue')['default']
     TheHeading: typeof import('./components/TheHeading.vue')['default']
-    Trash: typeof import('./components/icons/Trash.vue')['default']
     TypeSelect: typeof import('./components/common/TypeSelect.vue')['default']
   }
 }

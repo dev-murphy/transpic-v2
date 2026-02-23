@@ -84,12 +84,6 @@ onClickOutside(dropdownRef, () => {
 </template>
 
 <style scoped>
-@reference "tailwindcss";
-
-.dropdown.top::before {
-  @apply;
-}
-
 .v-enter-active,
 .v-leave-active {
   transition:
