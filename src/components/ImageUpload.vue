@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import type { Image } from "@/types";
-import { detechImageType } from "@/utils";
 import { breakpointsTailwind } from "@vueuse/core";
 
-// Add mobile screen breaking points
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const isMobile = breakpoints.smaller("md");
+import type { Image } from "@/types";
+import { detechImageType } from "@/utils";
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
   (e: "update:modelValue", value: Image[]): void;
 }>();
+
+// Add mobile screen breaking points
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const isMobile = breakpoints.smaller("md");
 
 const images = toRef(props.modelValue);
 const dropzoneRef = useTemplateRef("dropzoneRef");
@@ -31,9 +32,10 @@ onChange(async (files) => {
         name: currentFile.name,
         size: currentFile.size,
         content: await currentFile.arrayBuffer(),
-        type,
         link: "",
+        toFormat: "",
         loading: false,
+        type,
       });
     }
   }
@@ -50,9 +52,10 @@ const onDrop = (files: File[] | null) => {
       name: file.name,
       size: file.size,
       content: await file.arrayBuffer(),
-      type,
       link: "",
+      toFormat: "",
       loading: false,
+      type,
     });
   });
 
@@ -110,7 +113,7 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
       <button
         type="button"
         @click="() => open()"
-        class="w-full bg-linear-to-b from-emerald-500 to-emerald-700 border border-emerald-500 flex items-center justify-center gap-x-1 py-2 text-white rounded-lg inset-shadow-sm inset-shadow-emerald-200"
+        class="w-full max-w-[500px] bg-linear-to-b from-emerald-500 to-emerald-700 border border-emerald-500 flex items-center justify-center gap-x-1 py-2 mx-auto text-white rounded-lg inset-shadow-sm inset-shadow-emerald-200"
       >
         <AddImage class="w-5 h-5" />
         Choose Image(s)

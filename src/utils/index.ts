@@ -60,3 +60,33 @@ export async function detechImageType(file: File | Blob) {
 export function createDownloadLink(blob: Blob) {
   return URL.createObjectURL(blob);
 }
+
+export function truncatedName(imageName: string, truncatedLength = 4) {
+  let filename = imageName.split(".")[0];
+  if (!filename) return imageName;
+
+  if (filename.length <= truncatedLength) return imageName;
+
+  const nameLength = filename.length;
+  return `${imageName.substring(0, truncatedLength)}...${imageName.substring(nameLength - truncatedLength, nameLength)}.${imageName.split(".")[1]}`;
+}
+
+export function formatBytes(bytes: number, decimals = 2) {
+  if (!Number.isFinite(bytes) || bytes < 0) return "0 Bytes";
+  if (bytes === 0) return "0 Bytes";
+
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const unitIndex = Math.min(i, sizes.length - 1);
+
+  const value = bytes / Math.pow(k, unitIndex);
+
+  return `${parseFloat(value.toFixed(decimals))} ${sizes[unitIndex]}`;
+}
+
+export function compareSize(oldSize: number, newSize: number): string {
+  if (oldSize === 0) return "N/A";
+  return (((newSize - oldSize) / oldSize) * 100).toFixed(2);
+}

@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddImage: typeof import('./components/icons/AddImage.vue')['default']
     ArrowRight: typeof import('./components/icons/ArrowRight.vue')['default']
+    ChevronDown: typeof import('./components/icons/ChevronDown.vue')['default']
     Close: typeof import('./components/icons/Close.vue')['default']
     CloudDownload: typeof import('./components/icons/CloudDownload.vue')['default']
     Copy: typeof import('./components/icons/Copy.vue')['default']
@@ -25,5 +26,6 @@ declare module 'vue' {
     TheemToggle: typeof import('./components/common/TheemToggle.vue')['default']
     TheHeading: typeof import('./components/TheHeading.vue')['default']
     Trash: typeof import('./components/icons/Trash.vue')['default']
+    TypeSelect: typeof import('./components/common/TypeSelect.vue')['default']
   }
 }

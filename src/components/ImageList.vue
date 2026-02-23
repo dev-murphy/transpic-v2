@@ -1,8 +1,16 @@
 <script lang="ts" setup>
-import type { Image } from "@/types";
-import { createDownloadLink, detechImageType } from "@/utils";
-import ConverterWorker from "@/lib/converter?worker";
 import { breakpointsTailwind } from "@vueuse/core";
+
+import type { Image, FORMATS } from "@/types";
+import {
+  createDownloadLink,
+  detechImageType,
+  truncatedName,
+  formatBytes,
+  compareSize,
+} from "@/utils";
+import ConverterWorker from "@/lib/converter?worker";
+import { SUPPORTED_FORMATS } from "@/constants";
 
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
@@ -10,40 +18,15 @@ const emit = defineEmits<{
   (e: "delete", value?: number): void;
 }>();
 
-// add breakpoints props
+// isMobile check
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const isMobile = breakpoints.smaller("md");
 
-const truncatedName = (imageName: string, truncatedLength = 4) => {
-  let filename = imageName.split(".")[0];
-  if (!filename) return imageName;
-
-  if (filename.length <= truncatedLength) return imageName;
-
-  const nameLength = filename.length;
-  return `${imageName.substring(0, truncatedLength)}...${imageName.substring(nameLength - truncatedLength, nameLength)}.${imageName.split(".")[1]}`;
-};
-
-const formatBytes = (bytes: number, decimals = 2) => {
-  if (!Number.isFinite(bytes) || bytes < 0) return "0 Bytes";
-  if (bytes === 0) return "0 Bytes";
-
-  const k = 1024;
-  const sizes = ["Bytes", "KB", "MB", "GB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  const unitIndex = Math.min(i, sizes.length - 1);
-
-  const value = bytes / Math.pow(k, unitIndex);
-
-  return `${parseFloat(value.toFixed(decimals))} ${sizes[unitIndex]}`;
-};
-
+// conversion functionality
 const newFiles = ref<{ name: string; size: number }[]>([]);
 let converterWorker = new ConverterWorker();
 
 function convertInWorker(index: number, buffer: ArrayBuffer, format: string) {
-  console.log(format);
   converterWorker.postMessage({
     id: index,
     fileBuffer: buffer,
@@ -53,10 +36,12 @@ function convertInWorker(index: number, buffer: ArrayBuffer, format: string) {
   converterWorker.addEventListener("message", (event) => {
     let index = event.data.id;
     if (props.modelValue[index]) {
-      const blob = new Blob([event.data.output], { type: `image/${format}` });
+      const blob = new Blob([event.data.output], {
+        type: `image/${format.toLowerCase()}`,
+      });
       newFiles.value[index] = {
         size: blob.size,
-        name: `${props.modelValue[index].name.split(".")[0]}.${format}`,
+        name: `${props.modelValue[index].name.split(".")[0]}.${format.toLowerCase()}`,
       };
 
       props.modelValue[index].link = createDownloadLink(blob);
@@ -70,17 +55,49 @@ function convertImages() {
     const currentImage = props.modelValue[i];
     if (currentImage) {
       currentImage.loading = true;
-      const desiredFormat = currentImage.type === "webp" ? "png" : "webp";
-      convertInWorker(i, currentImage.content, desiredFormat);
+      convertInWorker(i, currentImage.content, currentImage.toFormat);
     }
   }
 }
 
-function compareSize(oldSize: number, newSize: number): string {
-  if (oldSize === 0) return "N/A";
-  return (((newSize - oldSize) / oldSize) * 100).toFixed(2);
+// global format
+const globalFormat = ref<FORMATS>("");
+const formatToHide = computed(() => [
+  ...new Set(props.modelValue.map((i) => i.type)),
+]);
+
+const hasGlobalFormat = computed(() =>
+  props.modelValue.every((i) => i.toFormat === props.modelValue[0]?.toFormat),
+);
+
+watch(hasGlobalFormat, (value) => {
+  if (!value) {
+    globalFormat.value = "";
+  } else {
+    globalFormat.value = props.modelValue[0]!.toFormat;
+  }
+});
+
+function setGlobalFormat(format: FORMATS) {
+  const newImages = props.modelValue.map((image) => {
+    return {
+      ...image,
+      toFormat: format,
+    };
+  });
+
+  globalFormat.value = format;
+  emit("update:modelValue", newImages);
 }
 
+// computed props
+const hasImageFormats = computed(() =>
+  props.modelValue.every((i) => i.toFormat !== ""),
+);
+
+const hasDownloadLinks = computed(() => props.modelValue.every((i) => i.link));
+
+// file handling
 const { open, onChange } = useFileDialog({
   accept: "image/*",
 });
@@ -100,20 +117,33 @@ onChange(async (files) => {
         name: currentFile.name,
         size: currentFile.size,
         content: await currentFile.arrayBuffer(),
-        type,
         link: "",
+        toFormat: "",
         loading: false,
+        type,
       });
     }
   }
 
   emit("update:modelValue", images);
 });
+
+function downloadAll() {
+  props.modelValue.forEach((image, index) => {
+    if (!image.link) return;
+
+    const a = document.createElement("a");
+    a.href = image.link;
+    a.download = newFiles.value[index]!.name;
+    a.click();
+  });
+}
 </script>
 
 <template>
   <div class="w-full max-w-[700px] mt-10 text-neutral-800 dark:text-white">
     <button
+      v-if="!hasDownloadLinks"
       class="flex items-center gap-x-0.5 bg-emerald-400 hover:brightness-120 px-2 py-1 text-sm md:text-base text-neutral-900 font-bold cursor-pointer rounded-t-md"
       @click="() => open()"
     >
@@ -121,9 +151,9 @@ onChange(async (files) => {
       Add More Images
     </button>
 
-    <div class="bg-neutral-200 dark:bg-neutral-800 overflow-y-auto">
+    <div class="bg-neutral-200 dark:bg-neutral-800">
       <div
-        v-for="(image, index) in props.modelValue"
+        v-for="(image, index) in modelValue"
         :key="index"
         class="flex items-center justify-between py-1.5 px-2"
         :class="{
@@ -133,7 +163,12 @@ onChange(async (files) => {
       >
         <div class="flex flex-col text-base md:text-lg">
           <p class="font-mono">
-            {{ truncatedName(image.name, isMobile ? 6 : 10) }}
+            <span v-if="!hasDownloadLinks">
+              {{ truncatedName(image.name, isMobile ? 6 : 10) }}
+            </span>
+            <span v-else-if="newFiles[index]">
+              {{ truncatedName(newFiles[index].name, isMobile ? 6 : 10) }}
+            </span>
           </p>
           <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400">
             {{ formatBytes(image.size) }}
@@ -166,28 +201,16 @@ onChange(async (files) => {
           <p class="text-sm">LOADING</p>
         </button>
 
-        <div
+        <TypeSelect
           v-else-if="!image.link"
-          class="flex items-center gap-x-0.5 ml-auto mr-2 md:mr-3 text-xs md:text-sm font-bold text-neutral-900"
-        >
-          <span
-            v-if="!isMobile"
-            class="px-1 py-0.5 bg-neutral-600 dark:bg-emerald-400 text-emerald-400 dark:text-neutral-900 uppercase rounded-lg select-none pointer-events-none"
-            >{{ image.type }}</span
-          >
-          <ArrowRight
-            v-if="!isMobile"
-            class="w-5 h-5 text-neutral-800 dark:text-neutral-50"
-          />
-          <button
-            class="px-1 py-0.5 bg-neutral-600 dark:bg-emerald-400 text-emerald-400 dark:text-neutral-900 hover:brightness-120 hover:scale-105 transition-all rounded-lg cursor-pointer"
-          >
-            {{ image.type === "webp" ? "PNG" : "WEBP" }}
-          </button>
-        </div>
+          v-model="image.toFormat"
+          :options="SUPPORTED_FORMATS"
+          :hide="[image.type]"
+          class="ml-auto mr-1"
+        />
 
         <!-- Buttons -->
-        <div class="flex items-center">
+        <div v-if="!image.loading" class="flex items-center">
           <a
             v-if="image.link"
             :href="image.link"
@@ -202,7 +225,7 @@ onChange(async (files) => {
             <Copy class="w-5 h-5 group-hover:text-blue-500" />
           </button> -->
           <button
-            class="group w-7 h-7 grid place-items-center hover:bg-red-500/10 dark:hover:bg-neutral-900 rounded-md cursor-pointer"
+            class="group w-7 h-7 grid place-items-center hover:bg-red-500/10 dark:hover:bg-neutral-900/50 rounded-md cursor-pointer"
             @click="$emit('delete', index)"
           >
             <Close class="w-5 h-5 group-hover:text-red-500" />
@@ -213,15 +236,46 @@ onChange(async (files) => {
     <div
       class="bg-neutral-300 dark:bg-neutral-600 flex items-center justify-between py-3 px-2"
     >
-      <p class="text-sm md:text-base">Added {{ modelValue.length }} files</p>
+      <p class="text-sm md:text-base">
+        {{ hasDownloadLinks ? "Converted" : "Added" }}
+        {{ modelValue.length }} files
+        <span v-if="!hasDownloadLinks" class="hidden md:inline"
+          >| Convert to:
+        </span>
+      </p>
+
+      <TypeSelect
+        v-if="!hasDownloadLinks"
+        :model-value="globalFormat"
+        @update:model-value="
+          (value) => {
+            setGlobalFormat(value as FORMATS);
+          }
+        "
+        :options="SUPPORTED_FORMATS"
+        :hide="formatToHide"
+        class="ml-2 mr-auto"
+      />
 
       <div class="flex items-center gap-x-2 mr-0.5">
         <button
-          class="px-3 py-1.5 bg-emerald-400 hover:brightness-120 text-xs md:text-sm text-neutral-900 font-bold uppercase tracking-wide cursor-pointer rounded-md"
+          v-if="!hasDownloadLinks"
+          class="px-3 py-1.5 bg-emerald-400 disabled:bg-emerald-700 hover:brightness-120 text-xs md:text-sm text-neutral-900 disabled:text-emerald-900 font-bold uppercase tracking-wide cursor-pointer rounded-md disabled:cursor-not-allowed"
+          :disabled="!hasImageFormats"
           @click="convertImages"
         >
           Convert
         </button>
+
+        <button
+          v-else
+          class="px-3 py-1.5 bg-emerald-400 disabled:bg-emerald-700 hover:brightness-120 text-xs md:text-sm text-neutral-900 disabled:text-emerald-900 font-bold uppercase tracking-wide cursor-pointer rounded-md disabled:cursor-not-allowed"
+          :disabled="!hasImageFormats"
+          @click="downloadAll"
+        >
+          Download
+        </button>
+
         <button
           class="group p-1 hover:bg-red-500/10 dark:hover:bg-neutral-900 rounded-md cursor-pointer"
           @click="$emit('delete')"

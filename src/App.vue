@@ -34,7 +34,7 @@ const deleteImage = (id?: number) => {
     <ImageList v-else v-model="images" @delete="deleteImage" />
 
     <p
-      class="mt-auto mb-3 pt-3 md:divide-x md:divide-neuetral-400 text-center text-sm text-neutral-400"
+      class="mt-auto mb-3 pt-3 md:space-x-1 md:divide-x md:divide-neuetral-400 text-center text-sm text-neutral-400"
     >
       <span class="block md:inline">
         Copyright ©{{ new Date().getFullYear() }} Transpic v2 | All rights
