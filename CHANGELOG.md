@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.0](https://github.com/dev-murphy/transpic-v2/compare/v1.4.1...v1.5.0) (2026-02-23)
+
+### ✨ Features
+
+* add format dropdown, add polish to the app ([4792161](https://github.com/dev-murphy/transpic-v2/commit/47921612f470168ff6a3688b7482bfa39bee57e3))
+
+### 🐛 Bug Fixes
+
+* remove unused tailwind classes ([c13fd38](https://github.com/dev-murphy/transpic-v2/commit/c13fd38b948c9cb8b413ea0b678a341915ccd813))
+
+### 💅 UI Updates
+
+* resolve mobile styling issues ([5f2d84a](https://github.com/dev-murphy/transpic-v2/commit/5f2d84adfba116f34eb8d3f223109625868c0ee3))
+
 ## [1.4.1](https://github.com/dev-murphy/transpic-v2/compare/v1.4.0...v1.4.1) (2026-02-22)
 
 ### 💅 UI Updates
