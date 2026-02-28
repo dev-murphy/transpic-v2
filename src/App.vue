@@ -13,6 +13,7 @@ watch(
   },
 );
 
+// TODO: move this to pinia store 
 const images = ref<Image[]>([]);
 
 const deleteImage = (id?: number) => {

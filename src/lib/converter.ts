@@ -12,6 +12,8 @@ function getInitPromise() {
   return initPromise;
 }
 
+// TODO: update this to accept more options, like quality
+// TODO: handle compression as well
 self.onmessage = async (event: MessageEvent<Data>) => {
   const { id, fileBuffer, format } = event.data;
   await getInitPromise();

@@ -12,6 +12,8 @@ import {
 import ConverterWorker from "@/lib/converter?worker";
 import { SUPPORTED_FORMATS } from "@/constants";
 
+// TODO: move all of the image stuff to pinia store
+
 const props = defineProps<{ modelValue: Image[] }>();
 const emit = defineEmits<{
   (e: "update:modelValue", value: Image[]): void;
@@ -141,7 +143,8 @@ function downloadAll() {
 </script>
 
 <template>
-  <div class="w-full max-w-[700px] mt-10 text-neutral-800 dark:text-white">
+  <!-- TODO: add a disclaimer that conversions will be slower to mobile apps -->
+  <div class="w-full max-w-175 mt-10 text-neutral-800 dark:text-white">
     <button
       v-if="!hasDownloadLinks"
       class="flex items-center gap-x-0.5 bg-emerald-400 hover:brightness-120 px-2 py-1 text-sm md:text-base text-neutral-900 font-bold cursor-pointer rounded-t-md"
