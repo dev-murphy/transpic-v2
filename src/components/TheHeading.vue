@@ -7,7 +7,7 @@
     </h1>
 
     <p
-      class="max-w-[600px] mt-2 text-base md:text-xl text-center text-neutral-500"
+      class="max-w-150 mt-2 text-base md:text-xl text-center text-neutral-500"
     >
       A convenient way of converting all of your images. <br />
       This app is 🚧<span class="font-bold">UNDER CONSTRUCTION</span>🚧.
