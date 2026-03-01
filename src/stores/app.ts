@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 
-import { detectImageType } from "@/utils";
-import type { FORMATS, Image } from "@/types";
+import { detectImageType, compareSize } from "@/utils";
+import type {  Image, ImageFormat } from "@/types";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
     isDarkMode: true,
     images: [] as Image[],
-    format: "" as FORMATS,
+    format: "" as ImageFormat | "",
   }),
   getters: {
     noOfImages: (state) => state.images.length,
@@ -47,6 +47,12 @@ export const useAppStore = defineStore("app", {
         this.images = this.images.filter((_, i) => i !== id);
       }
     },
+    sizeDiff(index: number) {
+      const image = this.images[index];
+
+      if(!image || !image.convertedSize) return 'N/A';
+      return compareSize(image.size, image.convertedSize)
+    },
     downloadAll() {
       this.images.forEach((image) => {
         if (!image.link) return;
@@ -57,7 +63,7 @@ export const useAppStore = defineStore("app", {
         a.click();
       });
     },
-    setGlobalFormat(format: FORMATS) {
+    setGlobalFormat(format: ImageFormat) {
       this.images.forEach(i => i.toFormat = format);
       this.format = format;
     }

@@ -1,16 +1,20 @@
 import type { MagickFormat } from "@imagemagick/magick-wasm";
-import { SUPPORTED_FORMATS } from "@/constants";
+import { ImageFormats } from "@/constants";
 
-export type FORMATS = (typeof SUPPORTED_FORMATS)[number] | "";
+export type ImageExtension = (typeof ImageFormats)[number]['ext'] | "";
+export type ImageType = (typeof ImageFormats)[number]['type'] | 'unknown';
+export type ImageFormat = (typeof ImageFormats)[number]['format'] | '';
 
 export interface Image {
   name: string;
   size: number;
   content: ArrayBuffer;
-  type: string;
   link: string;
-  toFormat: FORMATS;
+  type: ImageFormat ;
+  toFormat: ImageFormat;
   loading: boolean;
+  convertedName?: string;
+  convertedSize?: number;
 }
 
 export type Data = {
@@ -18,3 +22,5 @@ export type Data = {
   fileBuffer: ArrayBuffer;
   format: MagickFormat;
 };
+
+
