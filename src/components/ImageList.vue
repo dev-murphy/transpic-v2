@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { breakpointsTailwind } from "@vueuse/core";
 
-import type { FORMATS } from "@/types";
 import {
   createDownloadLink,
   truncatedName,
   formatBytes,
-  compareSize,
 } from "@/utils";
 import ConverterWorker from "@/lib/converter?worker";
-import { SUPPORTED_FORMATS } from "@/constants";
+import type { ImageFormat } from "@/types";
+import { ImageFormats } from "@/constants";
 
 const appStore = useAppStore();
 
@@ -18,10 +17,13 @@ const breakpoints = useBreakpoints(breakpointsTailwind);
 const isMobile = breakpoints.smaller("md");
 
 // conversion functionality
-const newFiles = ref<{ name: string; size: number }[]>([]);
 let converterWorker = new ConverterWorker();
 
-function convertInWorker(index: number, buffer: ArrayBuffer, format: string) {
+function convertInWorker(
+  index: number,
+  buffer: ArrayBuffer,
+  format: Omit<ImageFormat, "">,
+) {
   converterWorker.postMessage({
     id: index,
     fileBuffer: buffer,
@@ -30,16 +32,14 @@ function convertInWorker(index: number, buffer: ArrayBuffer, format: string) {
 
   converterWorker.addEventListener("message", (event) => {
     let index = event.data.id;
-    if (appStore.images[index]) {
-      const blob = new Blob([event.data.output], {
-        type: `image/${format.toLowerCase()}`,
-      });
-      
-      newFiles.value[index] = {
-        size: blob.size,
-        name: `${appStore.images[index].name.split(".")[0]}.${format.toLowerCase()}`,
-      };
 
+    if (appStore.images[index]) {
+      const type = ImageFormats.find(i => i.format === format)?.type;
+      const blob = new Blob([event.data.output], { type });
+
+      appStore.images[index].convertedName =
+        `${appStore.images[index].name.split(".")[0]}.${format.toLowerCase()}`;
+      appStore.images[index].convertedSize = blob.size;
       appStore.images[index].link = createDownloadLink(blob);
       appStore.images[index].loading = false;
     }
@@ -51,18 +51,25 @@ function convertImages() {
     const currentImage = appStore.images[i];
     if (currentImage) {
       currentImage.loading = true;
-      convertInWorker(i, currentImage.content, currentImage.toFormat);
+      convertInWorker(
+        i,
+        currentImage.content,
+        currentImage.toFormat,
+      );
     }
   }
 }
 
-watch(() => appStore.hasGlobalFormat, (value) => {
-  if (!value) {
-    appStore.format = "";
-  } else {
-    appStore.format = appStore.images[0]!.toFormat;
-  }
-});
+watch(
+  () => appStore.hasGlobalFormat,
+  (value) => {
+    if (!value) {
+      appStore.format = "";
+    } else {
+      appStore.format = appStore.images[0]!.toFormat;
+    }
+  },
+);
 
 // file handling
 const { open, onChange } = useFileDialog({
@@ -72,7 +79,7 @@ const { open, onChange } = useFileDialog({
 onChange(async (files) => {
   if (!files) return;
 
-  appStore.addImages(files)
+  appStore.addImages(files);
 });
 </script>
 
@@ -103,30 +110,22 @@ onChange(async (files) => {
             <span v-if="!appStore.hasDownloadLinks">
               {{ truncatedName(image.name, isMobile ? 6 : 10) }}
             </span>
-            <span v-else-if="newFiles[index]">
-              {{ truncatedName(newFiles[index].name, isMobile ? 6 : 10) }}
+            <span v-else-if="image.convertedName">
+              {{ truncatedName(image.convertedName, isMobile ? 6 : 10) }}
             </span>
           </p>
           <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400">
             {{ formatBytes(image.size) }}
             <span
-              v-if="newFiles[index]"
+              v-if="image.convertedSize"
               class="font-bold"
               :class="{
-                'text-red-500':
-                  compareSize(image.size, newFiles[index].size).charAt(0) !==
-                  '-',
-                'text-green-600':
-                  compareSize(image.size, newFiles[index].size).charAt(0) ===
-                  '-',
+                'text-red-500': appStore.sizeDiff(index)[0] !== '-',
+                'text-green-600': appStore.sizeDiff(index)[0] === '-',
               }"
             >
-              ({{ compareSize(image.size, newFiles[index].size)
-              }}{{
-                compareSize(image.size, newFiles[index].size) !== "N/A"
-                  ? "%"
-                  : ""
-              }})
+              ({{ appStore.sizeDiff(index)[0]
+              }}<span v-if="appStore.sizeDiff(index)[0] !== 'N/A'">%</span>)
             </span>
           </p>
         </div>
@@ -141,7 +140,6 @@ onChange(async (files) => {
         <TypeSelect
           v-else-if="!image.link"
           v-model="image.toFormat"
-          :options="SUPPORTED_FORMATS"
           :hide="[image.type]"
           class="ml-auto mr-1"
         />
@@ -149,9 +147,9 @@ onChange(async (files) => {
         <!-- Buttons -->
         <div v-if="!image.loading" class="flex items-center">
           <a
-            v-if="image.link"
+            v-if="image.link && image.convertedName"
             :href="image.link"
-            :download="`${image.name.split('.')[0]}.${image.type === 'webp' ? 'png' : 'webp'}`"
+            :download="image.convertedName"
             class="group w-7 h-7 grid place-items-center hover:bg-blue-500/10 dark:hover:bg-neutral-900 rounded-md cursor-pointer"
           >
             <Download class="w-5 h-5 group-hover:text-blue-500" />
@@ -184,13 +182,9 @@ onChange(async (files) => {
       <TypeSelect
         v-if="!appStore.hasDownloadLinks"
         :model-value="appStore.format"
-        @update:model-value="
-          (value) => {
-            appStore.setGlobalFormat(value as FORMATS);
-          }
-        "
-        :options="SUPPORTED_FORMATS"
+        @update:model-value="appStore.setGlobalFormat"
         :hide="appStore.formatToHide"
+        position="top"
         class="ml-2 mr-auto"
       />
 
