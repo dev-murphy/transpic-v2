@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Image } from "./types";
-
 // Theme controls
 const appStore = useAppStore();
 const mode = useColorMode();
@@ -13,16 +11,6 @@ watch(
   },
 );
 
-// TODO: move this to pinia store 
-const images = ref<Image[]>([]);
-
-const deleteImage = (id?: number) => {
-  if (id === undefined) {
-    images.value = [];
-  } else {
-    images.value = images.value.filter((_, index) => index !== id);
-  }
-};
 </script>
 
 <template>
@@ -31,8 +19,8 @@ const deleteImage = (id?: number) => {
   >
     <TheemToggle v-model="appStore.isDarkMode" />
     <TheHeading />
-    <ImageUpload v-if="images.length === 0" v-model="images" />
-    <ImageList v-else v-model="images" @delete="deleteImage" />
+    <ImageUpload v-if="appStore.images.length === 0" />
+    <ImageList v-else />
 
     <p
       class="mt-auto mb-3 pt-3 md:space-x-1 md:divide-x md:divide-neuetral-400 text-center text-sm text-neutral-400"

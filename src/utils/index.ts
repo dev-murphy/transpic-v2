@@ -1,4 +1,4 @@
-export async function detechImageType(file: File | Blob) {
+export async function detectImageType(file: File | Blob) {
   const buffer = await file.arrayBuffer();
   const bytes = new Uint8Array(buffer);
   // WebP
