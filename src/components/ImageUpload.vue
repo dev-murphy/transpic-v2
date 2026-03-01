@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { breakpointsTailwind } from "@vueuse/core";
+import InfoDump from "./common/InfoDump.vue";
 
 const appStore = useAppStore();
 // Add mobile screen breaking points
@@ -13,12 +14,12 @@ const { open, onChange } = useFileDialog({
 
 onChange(async (files) => {
   if (!files) return;
-  appStore.addImages(files)
+  appStore.addImages(files);
 });
 
 const onDrop = (files: File[] | null) => {
   if (!files) return;
-  appStore.addImages(files)
+  appStore.addImages(files);
 };
 
 const { isOverDropZone } = useDropZone(dropzoneRef, {
@@ -30,11 +31,37 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
 </script>
 
 <template>
-  <div class="w-screen flex flex-col items-center px-3">
+  <div class="w-screen flex flex-col items-center px-3 mt-4">
+    <!-- Info Dump -->
+    <InfoDump class="w-full max-w-175 mb-4 mx-auto">
+      <div class="text-neutral-500 dark:text-neutral-300">
+        <h2
+          class="mb-2 text-neutral-900 dark:text-white text-sm md:text-base font-bold"
+        >
+          Size & Devices Matter
+        </h2>
+
+        <p class="text-xs md:text-sm leading-5 md:leading-normal">
+          <span class="font-bold">Please Note:</span> That images with larger
+          size
+          <span
+            class="px-1 py-0.75 bg-emerald-500/50 dark:bg-neutral-700 text-neutral-900 dark:text-emerald-500 font-bold rounded"
+            >(greater than 1MB)</span
+          >
+          and
+          <span
+            class="px-1 py-0.75 bg-emerald-500/50 dark:bg-neutral-700 text-neutral-900 dark:text-emerald-500 font-bold rounded"
+            >mobile devices</span
+          >
+          usually take a longer time to process images.
+        </p>
+      </div>
+    </InfoDump>
+
     <div
       v-if="!isMobile"
       ref="dropzoneRef"
-      class="w-full max-w-175 h-125 flex flex-col items-center justify-center border-4 border-dashed mt-10 select-none rounded-2xl"
+      class="w-full max-w-175 h-125 flex flex-col items-center justify-center border-4 border-dashed select-none rounded-2xl"
       :class="{
         'bg-neutral-200 dark:bg-neutral-800 border-neutral-400 dark:border-neutral-600':
           !isOverDropZone,
@@ -65,7 +92,7 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
       </template>
     </div>
 
-    <div v-else class="w-full mt-10">
+    <div v-else class="w-full">
       <p class="text-center dark:text-white pb-2">
         Upload any image(s) you want to convert
       </p>

@@ -20,6 +20,8 @@ declare module 'vue' {
     Download: typeof import('./components/icons/Download.vue')['default']
     ImageList: typeof import('./components/ImageList.vue')['default']
     ImageUpload: typeof import('./components/ImageUpload.vue')['default']
+    Info: typeof import('./components/icons/Info.vue')['default']
+    InfoDump: typeof import('./components/common/InfoDump.vue')['default']
     Moon: typeof import('./components/icons/Moon.vue')['default']
     Plus: typeof import('./components/icons/Plus.vue')['default']
     Sun: typeof import('./components/icons/Sun.vue')['default']

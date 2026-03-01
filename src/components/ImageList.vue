@@ -1,11 +1,7 @@
 <script lang="ts" setup>
 import { breakpointsTailwind } from "@vueuse/core";
 
-import {
-  createDownloadLink,
-  truncatedName,
-  formatBytes,
-} from "@/utils";
+import { createDownloadLink, truncatedName, formatBytes } from "@/utils";
 import ConverterWorker from "@/lib/converter?worker";
 import type { ImageFormat } from "@/types";
 import { ImageFormats } from "@/constants";
@@ -34,7 +30,7 @@ function convertInWorker(
     let index = event.data.id;
 
     if (appStore.images[index]) {
-      const type = ImageFormats.find(i => i.format === format)?.type;
+      const type = ImageFormats.find((i) => i.format === format)?.type;
       const blob = new Blob([event.data.output], { type });
 
       appStore.images[index].convertedName =
@@ -51,11 +47,7 @@ function convertImages() {
     const currentImage = appStore.images[i];
     if (currentImage) {
       currentImage.loading = true;
-      convertInWorker(
-        i,
-        currentImage.content,
-        currentImage.toFormat,
-      );
+      convertInWorker(i, currentImage.content, currentImage.toFormat);
     }
   }
 }
@@ -84,7 +76,6 @@ onChange(async (files) => {
 </script>
 
 <template>
-  <!-- TODO: add a disclaimer that conversions will be slower to mobile apps -->
   <div class="w-full max-w-175 mt-10 text-neutral-800 dark:text-white">
     <button
       v-if="!appStore.hasDownloadLinks"
