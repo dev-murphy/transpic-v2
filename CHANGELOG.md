@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/dev-murphy/transpic-v2/compare/v1.5.0...v1.6.0) (2026-03-01)
+
+### ✨ Features
+
+* move all image data to pinia store ([f602345](https://github.com/dev-murphy/transpic-v2/commit/f6023450a57f58d9c81f8c2c880f44fa60b3ec73))
+* update image formats constant with more data ([23a90a7](https://github.com/dev-murphy/transpic-v2/commit/23a90a7af339fe3bed3856aef8e51314a3d4e087))
+
+### 🧹 Miscellaneous
+
+* add bunch of todos ([045e1e4](https://github.com/dev-murphy/transpic-v2/commit/045e1e4458049c9ab302ef3eb9d4f40cc59f7ff6))
+* add disclaimer for size and mobile devices ([569de61](https://github.com/dev-murphy/transpic-v2/commit/569de61e63f792f161b3128cd017afa8b70bde63))
+* update types to fit the new data for image formats ([17750b4](https://github.com/dev-murphy/transpic-v2/commit/17750b4edf4cc3c52653a5f8724f67b58d9aec23))
+
+### 🔨 Code Refactors
+
+* handle new image formarts from constants ([1ad89a2](https://github.com/dev-murphy/transpic-v2/commit/1ad89a2e6351735f6cdd4303653ea0d31cef78b9))
+* move compareSize to pinia store, use new constant data ([e8e7cf8](https://github.com/dev-murphy/transpic-v2/commit/e8e7cf8237e2051b8244bc4b8aa7f1fad2b8de7d))
+
+### 💅 UI Updates
+
+* use recommend width from tailwindcss ([dd4cace](https://github.com/dev-murphy/transpic-v2/commit/dd4cace6794c186272270ae28a291b547008d169))
+
 ## [1.5.0](https://github.com/dev-murphy/transpic-v2/compare/v1.4.1...v1.5.0) (2026-02-23)
 
 ### ✨ Features
