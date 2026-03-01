@@ -1,28 +1,29 @@
 <script lang="ts" setup>
+import { ImageFormats } from '@/constants';
+import type { ImageFormat } from '@/types';
+
 const props = withDefaults(
   defineProps<{
-    modelValue: string;
-    options: Readonly<string[]>;
+    modelValue: ImageFormat;
     position?: "top" | "bottom";
-    hide?: string[];
+    hide?: ImageFormat[];
   }>(),
   {
     position: "bottom",
   },
 );
-defineEmits<{ (e: "update:modelValue", value: string): void }>();
+defineEmits<{ (e: "update:modelValue", value: ImageFormat): void }>();
 
 const filteredOptions = computed(() => {
-  let options = props.options;
   const hideOptions = props.hide;
 
   if (hideOptions) {
-    options = options.filter(
-      (item) => !hideOptions.includes(item.toLowerCase()),
-    );
+    return ImageFormats.filter(
+      (item) => !hideOptions.includes(item.format),
+    ).map(f => f.format);
   }
 
-  return options;
+  return ImageFormats.map((f) => f.format);
 });
 
 const isDropdownOpen = ref(false);
@@ -59,23 +60,36 @@ onClickOutside(dropdownRef, () => {
         :class="{
           ' top-full translate-y-2 before:bottom-full before:translate-y-px before:border-b-neutral-400 dark:before:border-b-neutral-500':
             position === 'bottom',
-          'bottom-full -translate-y-2 before:top-full before:-translate-y-px before:border-t-neutral-100 before:dark:border-t-neutral-500':
+          'bottom-full -translate-y-2 before:top-full before:-translate-y-px before:border-t-neutral-400 dark:before:border-t-neutral-500':
             position === 'top',
         }"
       >
         <div
-          class="relative bg-neutral-200 dark:bg-neutral-800 border border-neutral-400 dark:border-neutral-500 divide-y divide-neutral-300 dark:divide-neutral-700 overflow-hidden rounded-md shadow-md"
+          class="w-auto h-auto relative bg-neutral-200 dark:bg-neutral-800 border border-neutral-400 dark:border-neutral-500 divide-y divide-neutral-300 dark:divide-neutral-700 p-2 overflow-hidden rounded-md shadow-md"
         >
-          <div class="w-18 text-center" @click="$emit('update:modelValue', '')">
-            ...
-          </div>
-          <div
-            v-for="option in filteredOptions"
-            :key="option"
-            class="w-18 py-1 text-sm text-center select-none"
-            @click="$emit('update:modelValue', option)"
-          >
-            {{ option }}
+          <div class="w-max grid grid-cols-4 grid-flow-row gap-2">
+            <div
+              class=" text-center rounded cursor-pointer"
+              :class="{
+                'bg-neutral-100 dark:bg-neutral-600': modelValue === '',
+                'bg-neutral-300 hover:bg-neutral-100 dark:bg-neutral-700 dark:hover:bg-neutral-600': modelValue !== '',
+              }"
+              @click="$emit('update:modelValue', '')"
+            >
+              ...
+            </div>
+            <div
+              v-for="option in filteredOptions"
+              :key="option"
+              class=" w-13 py-1 text-sm text-center font-bold uppercase select-none rounded cursor-pointer"
+              :class="{
+                'bg-neutral-100 dark:bg-neutral-600': modelValue === option,
+                'bg-neutral-300 hover:bg-neutral-100 dark:bg-neutral-700 dark:hover:bg-neutral-600': modelValue !== option,
+              }"
+              @click="$emit('update:modelValue', option)"
+            >
+              {{ option }}
+            </div>
           </div>
         </div>
       </div>
